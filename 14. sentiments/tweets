@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+
+############################################################################
+# tweets.py
+#
+# Minor Programming
+# Programming II
+# Problem Set 6: Sentimental
+# Najib el Moussaoui
+#
+# Outputs a user's tweets and their positivity/negativity score.
+###########################################################################
+
+import os
+import sys
+import nltk
+
+from analyzer import Analyzer
+from termcolor import colored
+from helpers import get_user_timeline
+
+
+def main():
+    """Outputs tweets with accompanying score."""
+
+    # ensure proper usage
+    if len(sys.argv) != 2:
+        sys.exit("Usage: ./tweets @screen_name")
+
+    # absolute paths to lists
+    positives = os.path.join(sys.path[0], "positive-words.txt")
+    negatives = os.path.join(sys.path[0], "negative-words.txt")
+
+    # take username from commandline
+    username = sys.argv[1].strip("@")
+
+    # initialize analyzer
+    analyzer = Analyzer(positives, negatives)
+
+    # retrieve tweets from user, if unsuccesful, output error
+    tweets = get_user_timeline(username, 50)
+
+    if tweets == None:
+        exit("Couldn't load tweets.")
+
+    # iterate over tweets, assign score and color, and print
+    for tweet in tweets:
+        score = analyzer.analyze(tweet)
+        if score > 0.0:
+            print(colored("{} {}".format(score, tweet), "green"))
+        elif score < 0.0:
+            print(colored("{} {}".format(score, tweet), "red"))
+        else:
+            print(colored("{} {}".format(score, tweet), "yellow"))
+
+
+if __name__ == "__main__":
+    main()

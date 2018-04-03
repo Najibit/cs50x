@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+    <h1>Welcome, {{ user.username }}</h1>
+    <h4 style="float: left">TOTAL FUNDS: <b>{{ usd(user.cash) }}</b></h3>
+    <table class="table table-striped" style="width:100%">
+      <tr>
+        <th><h4>Symbol</h4></th>
+        <th><h4>Current price</h4></th>
+        <th><h4>Shares owned</h4></th>
+        <th><h4>Current total value</h4></th>
+      </tr>
+      {% for stock in stock %}
+      <tr>
+        <td><b>{{ stock.symbol }}</b></td>
+        <td>{{ usd(stock.current) }}</td>
+        <td>{{ stock.sum }}</td>
+        <td>{{ usd(stock.value) }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><b></b></td>
+      </tr>
+    </table>
+
+{% endblock %}
